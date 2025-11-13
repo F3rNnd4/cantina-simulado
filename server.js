@@ -122,7 +122,21 @@ app.post("/cadastro-produto/delete/:id", protect, async (req, res) => {
 });
 
 // Estoque de Produtos
+app.get("/estoque", protect, async (req, res) => {
+    const produtos = await runQuery ("SELECT * FROM produtos ORDER BY nome");
+    const movimentos = await runQuery(`
+        SELECT e.id, `
+    );
+    res.render("estoque", {
+        usuario: req.session.usuario,
+        produtos,
+        movimentos
+    });
+});
 
+app.post("/estoque", protect, async (req, res) => {
+    const { produto_id, nome, preco } = req.body;
+});
 
 
 // Inicia o servidor
