@@ -73,6 +73,56 @@ app.get("/dashboard", protect, async (req, res) => {
 });
 
 // Cadastro de Produtos
+app.get("/cadastro-produto", protect, async (req, res) => {
+    const busca = req.query.busca || "";
+    const produtos = await runQuery(
+        busca
+            ? "SELECT * FROM produtos WHERE nome ILIKE $1 ORDER BY nome"
+            : "SELECT * FROM produtos ORDER BY nome",
+        busca ? [`%${busca}%`] : []
+    );
+    res.render("cadastro-produto", {
+        usuario: req.session.usuario,
+        produtos,
+        busca
+    });
+});
+
+app.post("/cadastro-produto", protect, async (req, res) => {
+    const { nome, preco } = req.body;
+    if (!nome || !preco) {
+        return res.send("⚠️ Informe o nome do produto.");
+    }
+
+    await runQuery(
+        "INSERT INTO produtos (nome, preco) VALUES ($1, $2)",
+        [nome, preco]
+    );
+
+    res.redirect("/cadastro-produto");
+});
+
+app.post("/cadastro-produto/update/:id", protect, async (req, res) => {
+    const { id } = req.params;
+    const { nome, preco } = req.body;
+
+    await runQuery(
+        "UPDATE produtos SET nome = $1, preco = $2 WHERE id = $3",
+        [nome, preco, id]
+    );
+
+    res.redirect("/cadastro-produto");
+});
+
+app.post("/cadastro-produto/delete/:id", protect, async (req, res) => {
+    await runQuery(
+        "DELETE FROM produtos WHERE id = $1",
+        [req.params.id]
+    );
+});
+
+// Estoque de Produtos
+
 
 
 // Inicia o servidor
