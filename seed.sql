@@ -29,8 +29,8 @@ CREATE TABLE vendas (
 );
 
 INSERT INTO usuarios (nome, email, senha, funcao) VALUES
-('Maryna Silva', 'mary.silva@gmail.com', 'marynaA123', 'admin'),
-('Roberto Lima', 'roberto.lima@gmail.com', 'roberto123', 'funcionario');
+('Maryna Silva', 'marynasilva@gmail.com', 'marynaA123', 'admin'),
+('Roberto Lima', 'roberto.lima@yahoo.com', 'roberto123', 'funcionario');
 
 INSERT INTO produtos (nome, preco) VALUES
 ('Salgado assado de frango', 7.0),
